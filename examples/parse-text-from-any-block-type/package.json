@@ -18,6 +18,8 @@
     "url": "https://github.com/makenotion/notion-sdk-js/issues"
   },
   "dependencies": {
-    "@notionhq/client": "file:../.."
+    "@notionhq/client": "file:../..",
+    "dotenv": "^16.4.7",
+    "punycode": "^2.3.1"
   }
 }
