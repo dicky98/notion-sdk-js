@@ -17,7 +17,7 @@ async function main() {
         if (titleProperty && titleProperty.title) {
             console.log(`任务标题${index + 1}: ${title}`);
         }
-        //const taskContent = await retrieveBlockChildren(notion, page.id);
+        //const taskContent = await retrieveBlockChildren(page.id);
         // 获取并打印每个块的纯文本。
         //printBlockText(taskContent)
 

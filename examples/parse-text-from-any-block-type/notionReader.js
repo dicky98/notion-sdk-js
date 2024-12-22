@@ -19,12 +19,12 @@ export async function queryDatabase(databaseId) {
 }
 
 // 获取页面块的纯文本内容
-export async function retrieveBlockChildren(notionapi, id) {
+export async function retrieveBlockChildren(id) {
     console.log("正在检索块（异步）...")
     const blocks = []
   
     // 使用 iteratePaginatedAPI 辅助函数获取页面上的所有一级块
-    for await (const block of iteratePaginatedAPI(notionapi.blocks.children.list, {
+    for await (const block of iteratePaginatedAPI(notion.blocks.children.list, {
       block_id: id, // 可以将页面 ID 作为块 ID 传递：https://developers.notion.com/docs/working-with-page-content#modeling-content-as-blocks
     })) {
       blocks.push(block)
