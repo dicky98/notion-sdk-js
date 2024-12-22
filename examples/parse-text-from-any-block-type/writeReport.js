@@ -119,7 +119,8 @@ export function printProperties(properties) {
 
 export function printTasks(tasks) {
     tasks.forEach(task => {
-        console.log(`任务主标题: ${task.title} --在项目: ${task.notionPage.properties['项目归属'].multi_select[0].name}下`);
+        const taskIndex = tasks.indexOf(task) + 1;
+        console.log(`主任务${taskIndex}: ${task.title} --在项目: ${task.notionPage.properties['项目归属'].multi_select[0].name}下`);
         task.subTasks.forEach(subTask => {
             console.log(`--子任务: ${subTask.title}`);
         });
