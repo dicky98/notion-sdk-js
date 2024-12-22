@@ -8,7 +8,7 @@ const getPlainTextFromRichText = richText => {
 // 从公共 API 支持的任何块类型中获取纯文本。
 const getTextFromBlock = block => {
     let text
-  
+
     // 从支持富文本的块中获取富文本
     if (block[block.type].rich_text) {
       // 如果是空行，这将是一个空字符串。
@@ -82,8 +82,7 @@ const getTextFromBlock = block => {
   }
 
 export const printBlockText = blocks => {
-    console.log("显示块:")
-  
+    console.log("具体内容:")
     for (let i = 0; i < blocks.length; i++) {
       const text = getTextFromBlock(blocks[i])
       // 打印每个块的纯文本。

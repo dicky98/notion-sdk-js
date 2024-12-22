@@ -56,12 +56,19 @@ function printProperties(properties) {
         const targets = getWeekTasks(results, 2024, 50);
         console.log(`第50周的工作有：`);
         targets.forEach(async (page, index) => {
-            console.log(`任务 ${index + 1} : ${page.id}`);
+            //console.log(`任务 ${index + 1} : ${page.id}`);
+            //console.log(`页面内容: ${JSON.stringify(page, null, 2)}`);
+            const titleProperty = page.properties['事项名称'];
+            if (titleProperty && titleProperty.title) {
+                const title = titleProperty.title.map(text => text.plain_text).join('');
+                console.log(`任务标题${index + 1}: ${title}`);
+            }
             const taskContent = await retrieveBlockChildren(notion, page.id);
             // 获取并打印每个块的纯文本。
             printBlockText(taskContent)
+            
             //打印属性值
-            printProperties(page.properties);
+            //printProperties(page.properties);
         });
     }
 
