@@ -89,3 +89,29 @@ export const printBlockText = blocks => {
       console.log(text)
     }
   }
+
+  // 打印属性值的函数
+export function printProperties(properties) {
+    for (const [name, property] of Object.entries(properties)) {
+        //console.log(`属性名: ${name}, 类型: ${property.type}, 结构: ${JSON.stringify(property, null, 2)}`);
+        // console.log(`属性名: ${name}, 类型: ${property.type}, 值: ${JSON.stringify(property[property.type])}`);
+        // if (property.type == 'title') {
+        //     console.log(`工作项: ${property.title.map(text => text.plain_text).join('')}`);
+        // }
+        if (name == '上级 项目') {
+            //const parentId = property.relation[0]?.id;
+            if (property.relation[0]?.id) {
+                console.log(`--父项 ID: ${property.relation[0]?.id}`);
+            }
+        } else if (name == '子级 项目') {
+            //const childId = property.relation[0]?.id;
+            if (property.relation[0]?.id) {
+                console.log(`--子项 ID: ${property.relation[0]?.id}`);
+            }
+        } else if (name == '项目归属') {
+            property.multi_select.forEach(select => {
+                console.log(`--项目归属 : ${select.name}`);
+            });         
+        }
+        }
+    }

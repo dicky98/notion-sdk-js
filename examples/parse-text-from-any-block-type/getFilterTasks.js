@@ -1,6 +1,4 @@
 // 获取指定年份和周数的起始和结束日期
-import {iteratePaginatedAPI } from "@notionhq/client"
-
 function getWeekDates(year, weekNumber) {
     // 创建当年1月1日的日期对象
     const firstDayOfYear = new Date(year, 0, 1);
@@ -54,18 +52,4 @@ function getWeekDates(year, weekNumber) {
       console.log('No results');
     }
     return tasks;
-  }
-
-  export async function retrieveBlockChildren(notionapi, id) {
-    console.log("正在检索块（异步）...")
-    const blocks = []
-  
-    // 使用 iteratePaginatedAPI 辅助函数获取页面上的所有一级块
-    for await (const block of iteratePaginatedAPI(notionapi.blocks.children.list, {
-      block_id: id, // 可以将页面 ID 作为块 ID 传递：https://developers.notion.com/docs/working-with-page-content#modeling-content-as-blocks
-    })) {
-      blocks.push(block)
-    }
-  
-    return blocks
   }
