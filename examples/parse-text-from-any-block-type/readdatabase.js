@@ -11,7 +11,6 @@ async function main() {
     // 设置目标年份和周数
     const targets = getWeekTasks(results, 2024, week);
     let ToptasksArray = [];    //存放pageid和title
-    console.log(`第50周的工作有：`);
     // 打印任务主标题
     targets.forEach(async (page) => {
         const titleProperty = page.properties['事项名称'];

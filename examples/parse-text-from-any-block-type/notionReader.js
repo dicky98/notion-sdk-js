@@ -32,3 +32,11 @@ export async function retrieveBlockChildren(id) {
   
     return blocks
   }
+
+// 获取块的评论
+  export async function retrieveBlockComments(blockId) {
+    const response = await notion.comments.list({
+        block_id: blockId,
+    });
+    return response.results;
+}

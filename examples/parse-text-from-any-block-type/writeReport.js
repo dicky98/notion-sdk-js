@@ -1,3 +1,5 @@
+import {retrieveBlockChildren, retrieveBlockComments} from './notionReader.js';
+
 // 作者：Notion
 // 从支持富文本的块子元素中获取富文本数组并返回纯文本。
 // 注意：所有富文本对象都包含一个 plain_text 字段。
@@ -91,6 +93,23 @@ export const printBlockText = blocks => {
     }
   }
 
+  // 打印块评论的函数
+const printBlockComments = (blockId, comments) => {
+  if(comments.length === 0) {
+      return;
+  }
+  console.log(`Displaying comments for block ID: ${blockId}`);
+
+  // 打印每个评论的纯文本。
+  // for (let i = 0; i < comments.length; i++) {
+  //     const comment = comments[i];
+  //     console.log(`Comment: ${comment.rich_text.map(t => t.plain_text).join("")}`);
+  // }
+  //打印最新的一条评论
+  const comment = comments[comments.length - 1];
+  console.log(`最新进度: ${comment.rich_text.map(t => t.plain_text).join("")}`);
+};
+
   // 打印属性值的函数
 export function printProperties(properties) {
     for (const [name, property] of Object.entries(properties)) {
@@ -121,8 +140,14 @@ export function printTasks(tasks) {
     tasks.forEach(task => {
         const taskIndex = tasks.indexOf(task) + 1;
         console.log(`主任务${taskIndex}: ${task.title} --在项目: ${task.notionPage.properties['项目归属'].multi_select[0].name}下`);
+        retrieveBlockComments(task.notionPage.id).then(blocks => {
+          printBlockComments(task.notionPage.id, blocks);
+        });
         task.subTasks.forEach(subTask => {
             console.log(`--子任务: ${subTask.title}`);
+            retrieveBlockComments(subTask.notionPage.id).then(blocks => {
+              printBlockComments(subTask.notionPage.id, blocks);
+            });
         });
     });
 }
