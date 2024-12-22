@@ -1,3 +1,4 @@
+// 作者：Notion
 // 从支持富文本的块子元素中获取富文本数组并返回纯文本。
 // 注意：所有富文本对象都包含一个 plain_text 字段。
 const getPlainTextFromRichText = richText => {
@@ -115,3 +116,12 @@ export function printProperties(properties) {
         }
         }
     }
+
+export function printTasks(tasks) {
+    tasks.forEach(task => {
+        console.log(`任务主标题: ${task.title} --在项目: ${task.notionPage.properties['项目归属'].multi_select[0].name}下`);
+        task.subTasks.forEach(subTask => {
+            console.log(`--子任务: ${subTask.title}`);
+        });
+    });
+}

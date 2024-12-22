@@ -1,6 +1,6 @@
 import { getWeekTasks } from './getFilterTasks.js';
-import { printBlockText, printProperties } from './writeReport.js';
-import { queryDatabase, retrieveBlockChildren } from './notionReader.js';
+import { printProperties, printTasks } from './writeReport.js';
+import { queryDatabase } from './notionReader.js';
 
 // 主函数
 async function main() {
@@ -9,21 +9,42 @@ async function main() {
 
     // 设置目标年份和周数
     const targets = getWeekTasks(results, 2024, 50);
+    let ToptasksArray = [];    //存放pageid
+    let taskIndex = 0;
     console.log(`第50周的工作有：`);
-    targets.forEach(async (page, index) => {
-        //console.log(`页面内容: ${JSON.stringify(page, null, 2)}`);
+    // 打印任务主标题
+    targets.forEach(async (page) => {
         const titleProperty = page.properties['事项名称'];
         const title = titleProperty.title.map(text => text.plain_text).join('');
-        if (titleProperty && titleProperty.title) {
-            console.log(`任务标题${index + 1}: ${title}`);
+        const topTaskProperty = page.properties['上级 项目'];
+        const topTask = topTaskProperty.relation[0]?.id;
+        if (!topTask) {
+            taskIndex += 1;
+        }   
+        if (titleProperty && titleProperty.title && !topTask) {
+            //console.log(`任务主标题${taskIndex}: ${title}`);
+            ToptasksArray.push({ id: page.id, notionPage: page, title: title, subTasks: [] });
         }
-        //const taskContent = await retrieveBlockChildren(page.id);
-        // 获取并打印每个块的纯文本。
-        //printBlockText(taskContent)
-
         //打印数据库中的其他属性
-        printProperties(page.properties);
+        //printProperties(page.properties);
     });
+    //在主任务下加入子任务。
+    targets.forEach(async (page) => {
+        const titleProperty = page.properties['事项名称'];
+        const title = titleProperty.title.map(text => text.plain_text).join('');
+        const topTaskProperty = page.properties['上级 项目'];
+        const topTask = topTaskProperty.relation[0]?.id;
+        if (titleProperty && titleProperty.title && topTask) {
+            const parentTaskIndex = ToptasksArray.findIndex(task => task.id === topTask);
+            if (parentTaskIndex !== -1) {
+                //console.log(`子任务: ${titleProperty.title.map(text => text.plain_text).join('')}`);
+                ToptasksArray[parentTaskIndex].subTasks.push({ id: page.id, title: title, notionPage: page });
+            }
+        }
+        //打印数据库中的其他属性
+        //printProperties(page.properties);
+    });
+    printTasks(ToptasksArray);
 }
 
 main();
